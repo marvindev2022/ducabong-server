@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Manufacturer {
+  id        String    @id @default(uuid())
+  name      String
+  location  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  products  Product[]
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String
+  manufacturer Manufacturer @relation(fields: [manufacturerId], references: [id])
+  manufacturerId String
+  price       Float
+  quantity    Int
+  description String
+  promo       Boolean?  @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  sales       Sale[]
+}
+
+model Sale {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  date      DateTime  @default(now())
+  total     Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  products  Product[]
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  cpf       String    @unique
+  phone     String
+  password  String
+  isActive  Boolean?  @default(true)
+  isAdmin   Boolean?  @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  sales     Sale[]
+  logs      Logs[]
+  errors    ErrorLog[]
+
+  @@index([email], name: "idx_email_users")
+  @@index([cpf], name: "idx_cpf_users")
+}
+
+model Logs {
+  id        String    @id @default(uuid())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  date      DateTime  @default(now())
+  action    String    
+  details   String    
+  createdAt DateTime  @default(now())
+
+  @@index([userId], name: "idx_user_logs")
+}
+
+model ErrorLog {
+  id        String    @id @default(uuid())
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?
+  date      DateTime  @default(now())
+  message   String
+  stackTrace String?
+  action    String   
+  createdAt DateTime  @default(now())
+
+  @@index([userId], name: "idx_user_errors")
+}
