@@ -1,4 +1,4 @@
-export interface EmailValidationResponseDTO {
+export interface DataValidationResponseDTO {
   isAvailable: boolean;
   message: string;
 }

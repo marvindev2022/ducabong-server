@@ -8,7 +8,7 @@ interface UserCreationProps {
   name: string;
   email: string;
   cpf: string;
-  phone: string;
+  phone?: string;
   password: string;
   isActive?: boolean;
   admin?: boolean;
@@ -71,7 +71,6 @@ export class User {
     const userSchema = z.object({
       name: z.string().min(3, { message: 'Invalid' }),
       email: z.string().email().min(6, { message: 'Invalid' }),
-      phone: z.string().min(9, { message: 'Invalid' }),
       cpf: z.string().length(11, { message: 'Invalid' }),
       password: z.string().min(6, { message: 'Invalid' }),
     });

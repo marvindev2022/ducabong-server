@@ -27,7 +27,6 @@ describe('User', () => {
       email: 'any_email@mail.com',
       cpf: '11111111111',
       password: 'any_password',
-      phone: 'any_phone',
     });
 
     if (!newUser.props) {

@@ -13,7 +13,7 @@ import { EditDTO } from '@infra/http/models/User/edit.dto';
 import { RegisterDTO } from '@infra/http/models/User/register.dto';
 import { ResetPasswordDTO } from '@infra/http/models/User/resetPassword.dto';
 import { EditPasswordDTO } from '@infra/http/models/User/editPassword.dto';
-import { EmailValidationResponseDTO } from '@infra/http/models/User/emailValidationResponse.dto';
+import { DataValidationResponseDTO } from '@infra/http/models/User/emailValidationResponse.dto';
 import { z } from 'zod';
 import { sign } from 'jsonwebtoken';
 import { DeleteUserDTO } from '@infra/http/models/User/delete.dto';
@@ -27,15 +27,17 @@ export class UserService {
   ) {}
 
   async register(request: RegisterDTO): Promise<User | Error> {
-    const newUser = new User(request );
+    const newUser = new User(request);
 
     const cpfIsValid = this.cpfValidator.execute(newUser.props?.cpf as string);
-    const phoneIsValid = this.phoneValidator.execute(
-      newUser.props?.phone as string,
-    );
+    if (newUser.props?.phone) {
+      const phoneIsValid = this.phoneValidator.execute(
+        newUser.props?.phone as string,
+      );
+      if (!phoneIsValid) return new InvalidParamError('phone');
+    }
 
     if (!cpfIsValid) return new InvalidParamError('cpf');
-    if (!phoneIsValid) return new InvalidParamError('phone');
 
     await this.userRepository.register(newUser);
     return newUser;
@@ -170,28 +172,32 @@ export class UserService {
     throw new BadRequestException('Erro ao alterar senha!');
   }
 
-  async validateEmail(email: string): Promise<EmailValidationResponseDTO> {
-    const bodySchema = z.string().email({ message: 'E-mail' });
-    const sendedEmail = bodySchema.safeParse(email);
+  async validateData(
+    email: string,
+    cpf: string,
+  ): Promise<DataValidationResponseDTO> {
+    const bodySchema = z.object({
+      email: z.string().email({ message: 'E-mail' }),
+      cpf: z.string().length(11, { message: 'CPF' }),
+    });
+    const validateData = bodySchema.safeParse({ email, cpf });
 
-    if (!sendedEmail.success) {
-      throw new InvalidParamError(sendedEmail.error.message);
+    if (!validateData.success) {
+      throw new InvalidParamError(validateData.error.message);
     }
 
-    const emailIsValid = await this.userRepository.findByEmail(
-      sendedEmail.data,
-    );
+    const isValid: any = await this.userRepository.validateData(email, cpf);
 
-    if (emailIsValid instanceof NotFoundException) {
+    if (isValid instanceof NotFoundException) {
       return {
         isAvailable: true,
-        message: 'Nenhum usuário está cadastrado com este e-mail',
+        message: 'Nenhum usuário está cadastrado com este e-mail e cpf',
       };
     }
 
     return {
       isAvailable: false,
-      message: 'Já existe um usuário cadastrado com este e-mail',
+      message: 'Já existe um usuário cadastrado com este e-mail ou cpf',
     };
   }
   async deleteUser(request: DeleteUserDTO, id: string): Promise<void> {

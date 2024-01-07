@@ -55,9 +55,9 @@ export class PrismaUserRepository implements UserRepository {
         encryptedString: databaseStored.password,
       })
     ) {
-      return new BadRequestException('Email ou senha estão incorretos');
+      return new BadRequestException('Email ou senha estão incorretos!!');
     }
-    const { ...user } = new User({ ...databaseStored, isActive: true });
+    const { ...user } = new User({ ...databaseStored,isActive:true,phone:databaseStored.phone ?? '' });
     await this.prismaService.logs.create({
       data: {
         userId: user.props.id as string,
@@ -141,6 +141,19 @@ export class PrismaUserRepository implements UserRepository {
       return new NotFoundException('Nenhum usuário encontrado');
     }
 
-    return databaseResponse;
+    return {...databaseResponse,phone:databaseResponse.phone ?? ''};
+  }
+
+  async validateData(email: string, cpf: string): Promise<boolean> {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email,
+        cpf,
+      },
+    });
+
+    if (!user) return false;
+
+    return true;
   }
 }

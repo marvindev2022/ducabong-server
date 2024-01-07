@@ -109,4 +109,20 @@ export class inMemoryUserRepository implements UserRepository {
 
     this.users.splice(userIndex, 1);
   }
+
+  async validateData(email: string,cpf:string): Promise<boolean> {
+    const storedEmail = this.users.findIndex(
+      (user) => user.props.email === email,
+    );
+
+    const storedCpf = this.users.findIndex(
+      (user) => user.props.cpf === cpf,
+    );
+
+    if (storedEmail < 0 && storedCpf < 0) {
+      return false;
+    }
+
+    return true;
+  }
 }

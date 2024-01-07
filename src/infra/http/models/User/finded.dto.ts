@@ -3,6 +3,6 @@ export interface FindedDTO {
   name: string;
   email: string;
   cpf: string;
-  phone: string;
+  phone?: string;
   password: string;
 }

@@ -14,19 +14,7 @@ describe('User', () => {
       body: {
         email: 'any_email@mail.com',
         cpf: '11111111111',
-        phone: '11 11111-1111',
         password: 'any_password',
-        photo: 'any_photo',
-        
-        address: {
-          zipcode: 'any_cep',
-          complement: 'any_complement',
-          number: 'any_number',
-          neighborhood: 'any_neighborhood',
-          city: 'any_city',
-          state: 'any_state',
-          country: 'any_country',
-        },
       },
     };
 
@@ -38,19 +26,8 @@ describe('User', () => {
       body: {
         name: 'any_name',
         cpf: '11111111111',
-        phone: '11 11111-1111',
         password: 'any_password',
         age: 'any_age',
-        photo: 'any_photo',
-        address: {
-          zipcode: 'any_cep',
-          complement: 'any_complement',
-          number: 'any_number',
-          neighborhood: 'any_neighborhood',
-          city: 'any_city',
-          state: 'any_state',
-          country: 'any_country',
-        },
       },
     };
 
@@ -62,19 +39,9 @@ describe('User', () => {
       body: {
         name: 'any_name',
         email: 'any_email@mail.com',
-        phone: '11 11111-1111',
+
         password: 'any_password',
         age: 'any_age',
-        photo: 'any_photo',
-        address: {
-          zipcode: 'any_cep',
-          complement: 'any_complement',
-          number: 'any_number',
-          neighborhood: 'any_neighborhood',
-          city: 'any_city',
-          state: 'any_state',
-          country: 'any_country',
-        },
       },
     };
 
@@ -89,16 +56,6 @@ describe('User', () => {
         cpf: '11111111111',
         password: 'any_password',
         age: 'any_age',
-        photo: 'any_photo',
-        address: {
-          zipcode: 'any_cep',
-          complement: 'any_complement',
-          number: 'any_number',
-          neighborhood: 'any_neighborhood',
-          city: 'any_city',
-          state: 'any_state',
-          country: 'any_country',
-        },
       },
     };
 
@@ -111,18 +68,7 @@ describe('User', () => {
         name: 'any_name',
         email: 'any_email@mail.com',
         cpf: '11111111111',
-        phone: '11 11111-1111',
         age: 'any_age',
-        photo: 'any_photo',
-        address: {
-          zipcode: 'any_cep',
-          complement: 'any_complement',
-          number: 'any_number',
-          neighborhood: 'any_neighborhood',
-          city: 'any_city',
-          state: 'any_state',
-          country: 'any_country',
-        },
       },
     };
 
@@ -137,9 +83,8 @@ describe('User', () => {
         name: 'any_name',
         email: 'any_email@mail.com',
         cpf: '11111111111',
-        phone: '11 11111-1111',
         age: 'any_age',
-        photo: 'any_photo',
+
         password: 'any_password',
       },
     };
@@ -156,19 +101,8 @@ describe('User', () => {
         name: 'any_name',
         email: 'any_email@mail.com',
         cpf: '11111111111',
-        phone: '11 11111-1111',
         password: 'any_password',
         age: 'any_age',
-        photo: 'any_photo',
-        address: {
-          zipcode: 'any_cep',
-          complement: 'any_complement',
-          number: 'any_number',
-          neighborhood: 'any_neighborhood',
-          city: 'any_city',
-          state: 'any_state',
-          country: 'any_country',
-        },
       },
     };
     const newUser = makeSut(httpRequest);

@@ -28,5 +28,9 @@ export abstract class UserRepository {
     email: string,
   ): Promise<FindedDTO | NotFoundException>;
 
+  abstract validateData(email: string,cpf:string): Promise<boolean>;
+
+ 
+
   abstract deleteUser(request: DeleteUserDTO, id: string): Promise<void>;
 }

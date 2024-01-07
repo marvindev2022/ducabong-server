@@ -43,13 +43,15 @@ export class UsersController {
     return userData;
   }
 
-  @Post('validate/email')
-  async validateEmail(@Body() { email }: { email: string }) {
+  @Post('validate/data')
+  async validateEmail(@Body() { email,cpf }: { email: string ,cpf:string}) {
     if (!email) {
       throw new MissingParamError('email');
     }
-
-    const emailIsAvailable = await this.userService.validateEmail(email);
+    if (!cpf) {
+      throw new MissingParamError('cpf');
+    }
+    const emailIsAvailable = await this.userService.validateData(email,cpf);
 
     return emailIsAvailable;
   }

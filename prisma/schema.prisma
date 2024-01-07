@@ -18,18 +18,18 @@ model Manufacturer {
 }
 
 model Product {
-  id          String    @id @default(uuid())
-  name        String
-  manufacturer Manufacturer @relation(fields: [manufacturerId], references: [id])
+  id             String       @id @default(uuid())
+  name           String
+  manufacturer   Manufacturer @relation(fields: [manufacturerId], references: [id])
   manufacturerId String
-  price       Float
-  quantity    Int
-  description String
-  promo       Boolean?  @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
-  sales       Sale[]
+  price          Float
+  quantity       Int
+  description    String
+  promo          Boolean?     @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
+  sales          Sale[]
 }
 
 model Sale {
@@ -45,16 +45,16 @@ model Sale {
 }
 
 model User {
-  id        String    @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
-  email     String    @unique
-  cpf       String    @unique
-  phone     String
+  email     String     @unique
+  cpf       String     @unique
+  phone     String?    @default("")
   password  String
-  isActive  Boolean?  @default(true)
-  isAdmin   Boolean?  @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  isActive  Boolean?   @default(true)
+  isAdmin   Boolean?   @default(false)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   deletedAt DateTime?
   sales     Sale[]
   logs      Logs[]
@@ -65,26 +65,26 @@ model User {
 }
 
 model Logs {
-  id        String    @id @default(uuid())
-  user      User      @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
   userId    String
-  date      DateTime  @default(now())
-  action    String    
-  details   String    
-  createdAt DateTime  @default(now())
+  date      DateTime @default(now())
+  action    String
+  details   String
+  createdAt DateTime @default(now())
 
   @@index([userId], name: "idx_user_logs")
 }
 
 model ErrorLog {
-  id        String    @id @default(uuid())
-  user      User?     @relation(fields: [userId], references: [id])
-  userId    String?
-  date      DateTime  @default(now())
-  message   String
+  id         String   @id @default(uuid())
+  user       User?    @relation(fields: [userId], references: [id])
+  userId     String?
+  date       DateTime @default(now())
+  message    String
   stackTrace String?
-  action    String   
-  createdAt DateTime  @default(now())
+  action     String
+  createdAt  DateTime @default(now())
 
   @@index([userId], name: "idx_user_errors")
 }
