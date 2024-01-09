@@ -3,6 +3,7 @@ import { MissingParamError } from '@app/errors/MissingParamError';
 import { z } from 'zod';
 
 interface ProductCreationProps {
+  id?: string;
   name: string;
   price: number;
   description: string;
